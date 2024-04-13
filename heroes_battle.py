@@ -54,12 +54,19 @@ class Fighter(Actor):
             weapon = self.weapon.name
         print(f"The Fighter is {self.name}; str {self.strength}; dex {self.dexterity}; int {self.intelligence}"
               f"; health {self.health}; weapon {weapon}")
+
     def resting_health(self):
+        print("You are resting health")
         self.health = 100
+
 
 class Monster(Actor):
     def __init__(self, name, strength, dexterity, intelligence, health):
         super().__init__(name, strength, dexterity, intelligence, health)
+        physic = (strength / STAT_MODIFIER +
+                 dexterity / STAT_MODIFIER)
+        mental = intelligence / STAT_MODIFIER
+        self.damage = {"physic": physic, "mental": mental}
 
     def print_all(self):
         print(f"There is a Monster - {self.name}; str {self.strength}; dex {self.dexterity}; int {self.intelligence}"
@@ -86,8 +93,12 @@ class Staff(Weapon):
 
 def battle(player, monster):
     while player.is_alive() and monster.is_alive():
+        print(f"The {monster.name} is appearing. Prepare to fight!")
+
         print("Master, choose your weapon:")
-        print("1. Sword\n2. Bow\n3. Staff")
+        print(f"1. {weapon1.name} {weapon1.damage["physic"]} physic {weapon1.damage["mental"]} mental dmg"
+              f"\n2. {weapon2.name} {weapon2.damage["physic"]} physic {weapon2.damage["mental"]} mental dmg"
+              f"\n3. {weapon3.name} {weapon3.damage["physic"]} physic {weapon3.damage["mental"]} mental dmg")
         choice = input("Enter your choice: ")
 
         if choice == "1":
@@ -116,7 +127,7 @@ def battle(player, monster):
         print("Game over. You were defeated by the monster.")
 
 # MAIN #
-print("Welcome to Hero Battle!")
+print("Welcome to the Heroes Battle!")
 name = input("What is your name? ")
 fighter1 = Fighter(name, rnd.randrange(10, 40), rnd.randrange(10, 40), rnd.randrange(10, 40), 100)
 fighter1.print_all()
@@ -138,27 +149,3 @@ if fighter1.is_alive():
     battle(fighter1, monster3)
 
 print("Thank you for playing!")
-
-
-# damage = fighter1.weapon.attack(fighter1.strength, fighter1.dexterity, fighter1.intelligence)
-# print(f"Fighter generates {damage} damage.")
-# monster1.take_damage(damage)
-#
-#
-# monster2.print_all()
-#
-# fighter1.change_weapon(weapon2)
-# damage = fighter1.weapon.attack(fighter1.strength, fighter1.dexterity, fighter1.intelligence)
-# print(f"Fighter generates {damage} damage.")
-# monster2.take_damage(damage)
-#
-# fighter1.change_weapon(weapon3)
-# damage = fighter1.weapon.attack(fighter1.strength, fighter1.dexterity, fighter1.intelligence)
-# print(f"Fighter generates {damage} damage.")
-# monster2.take_damage(damage)
-#
-# fighter1.change_weapon(weapon1)
-# damage = fighter1.weapon.attack(fighter1.strength, fighter1.dexterity, fighter1.intelligence)
-# print(f"Fighter generates {damage} damage.")
-# monster2.take_damage(damage)
-
